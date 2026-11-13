@@ -46,7 +46,7 @@ int main() {
 
         cntlevels[level]++;
 
-        level = "", error = "", text = "";
+        level = "", text = "";
     }
 
     for (const auto& entry : cntlevels) {
