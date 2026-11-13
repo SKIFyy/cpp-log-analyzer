@@ -1,0 +1,12 @@
+INFO: Application started
+INFO: Configuration loaded
+WARNING: Sensor response is slow
+ERROR: Sensor timeout
+INFO: Reading sensor data
+ERROR: Invalid configuration
+WARNING: Low battery
+ERROR: Sensor timeout
+INFO: Retrying request
+ERROR: Sensor timeout
+ERROR: Invalid configuration
+INFO: Application stopped
