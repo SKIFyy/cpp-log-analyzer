@@ -1,0 +1,6 @@
+INFO: Startup complete
+ERROR: Beta failure
+ERROR: Alpha failure
+WARNING: Retrying
+ERROR: Beta failure
+ERROR: Alpha failure

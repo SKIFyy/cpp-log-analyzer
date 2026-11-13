@@ -1,0 +1,6 @@
+INFO: Valid line
+ERROR
+DEBUG: Unknown level
+: Missing level
+ERROR: A:B
+WARNING: Valid warning

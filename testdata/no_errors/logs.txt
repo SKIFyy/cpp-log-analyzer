@@ -1,0 +1,3 @@
+INFO: Startup complete
+WARNING: Slow response
+INFO: Shutdown complete

@@ -11,76 +11,63 @@ int main() {
         return 1;
     }
 
-    std::vector<std::string> errors;
-    std::string line, level, error;
-    int flag2 = 0, flagsp = 0;
-    std::map<std::string, int> cntrs;
+    std::string line, level, text;
+    int linenum = 0;
+    std::map<std::string, int> cntlevels;
+    std::map<std::string, int> cnterrors;
+
+    cntlevels["INFO"] = 0; cntlevels["WARNING"] = 0; cntlevels["ERROR"] = 0;
 
     while (std::getline(file, line)) {
-        flag2 = 0;
-        flagsp = 0;
-        for (char symbol : line) {
-            if (flagsp == 10){
-                flagsp = 0;
+        linenum++;
+        auto pos = line.find(':');
+        if(pos != std::string::npos){
+            level = line.substr(0, pos);
+            if (cntlevels.count(level) != 0){
+                text = line.substr(pos + 1);
+                auto posnotspace = text.find_first_not_of(' ');
+                if (posnotspace != std::string::npos){
+                    text = text.substr(posnotspace);
+                    if (level == "ERROR"){
+                        cnterrors[text]++;
+                    }
+                }else{
+                    std::cout << "Пустой текст лога в строке " << linenum << "!\n";
+                    continue;
+                }
+            }else{
+                std::cout << "Неизвестный уровень лога в строке " << linenum << "!\n";
                 continue;
             }
-            if (symbol == ':'){
-                flag2 = 1;
-                flagsp = 10; 
-                continue;
-            }
-            if (flag2 == 0){
-                level += symbol;
-            }else if((flag2 == 1) & (level == "ERROR")){
-                error += symbol;
-            }
-            
-        }
-        
-        if (level == "ERROR"){
-            errors.push_back(error);
+        }else{
+            std::cout << "Строка " << linenum << " неверного формата!\n";
+            continue;
         }
 
-        if (level == "INFO"){
-            cntrs["INFO"]++;
-        }else if (level == "WARNING"){
-            cntrs["WARNING"]++;
-        }else if (level == "ERROR"){
-            cntrs["ERROR"]++;
-        }
+        cntlevels[level]++;
 
-        
-        // std::cout << line << '\n';
-        // std::cout << level << '\n';
-        // std::cout << error << '\n';
-        
-        level = "", error = "";
-
+        level = "", error = "", text = "";
     }
-    
-    int cnt = 0;
-    std::map<std::string, int> cnterrors;
-    for (std::string i : errors){
-        for (std::string f : errors){
-            if (i == f){
-                cnt++;
-            }
-        }
-        cnterrors[i] = cnt;
-        cnt = 0;
+
+    for (const auto& entry : cntlevels) {
+        std::cout << entry.first << ": " << entry.second << '\n';
     }
 
     std::string name;
     int kol = 0;
-    for (const auto& entry : cnterrors) {
-        if (entry.second > kol){
-            kol = entry.second;
-            name = entry.first;
+    if (cnterrors.empty()){
+        std::cout << "Ошибок нет\n";
+    }else{
+        for (const auto& entry : cnterrors) {
+            if (entry.second > kol){
+                kol = entry.second;
+            }
+        }
+        std::cout << "Чаще всего встречалась(-ись) ошибка(-и):\n";
+        for (const auto& entry : cnterrors) {
+            if (kol == entry.second){
+                std::cout << entry.first << " - " << entry.second << " раз(-а)" << "\n";
+            }
         }
     }
-
-    for (const auto& entry : cntrs) {
-    std::cout << entry.first << ": " << entry.second << '\n';
-    }
-    std::cout << "Чаще всего встречалась ошибка:" << name << " " << kol << " раз" << "\n";
 }

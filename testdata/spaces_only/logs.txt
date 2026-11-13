@@ -1,0 +1,3 @@
+INFO: Before blank message
+ERROR:   
+INFO: After blank message
